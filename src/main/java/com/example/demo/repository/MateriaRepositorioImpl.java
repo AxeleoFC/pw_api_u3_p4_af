@@ -26,7 +26,7 @@ public class MateriaRepositorioImpl implements IMateriaRepository {
 	@Override
 	public void ingresar(Materia materia) {
 		// TODO Auto-generated method stub
-
+		this.entityManager.persist(materia);
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class MateriaRepositorioImpl implements IMateriaRepository {
 	public List<Materia> todasMaterias() {
 		// TODO Auto-generated method stub
 		TypedQuery<Materia> myQuery = this.entityManager
-				.createQuery("SELECT * FROM Materia m", Materia.class);
+				.createQuery("SELECT m FROM Materia m", Materia.class);
 		return myQuery.getResultList();
 	}
 

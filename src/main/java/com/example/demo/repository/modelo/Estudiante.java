@@ -28,6 +28,9 @@ public class Estudiante {
 	@Column(name = "estu_apellido")
 	private String apellido;
 	
+	@Column(name = "estu_provincia")
+	private String provincia;
+	
 	@Column(name = "estu_fecha_nacimineto")
 	private LocalDateTime fechaNacimineto;
 
@@ -76,6 +79,14 @@ public class Estudiante {
 
 	public void setFechaNacimineto(LocalDateTime fechaNacimineto) {
 		this.fechaNacimineto = fechaNacimineto;
+	}
+
+	public String getProvincia() {
+		return provincia;
+	}
+
+	public void setProvincia(String provincia) {
+		this.provincia = provincia;
 	}
 	
 	

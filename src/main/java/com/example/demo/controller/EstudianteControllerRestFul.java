@@ -25,18 +25,18 @@ public class EstudianteControllerRestFul {
 	private IEstudianteService estudianteService;
 	
 	//GET
-	@GetMapping(path = "/buscar/{cedula}")
+	@GetMapping(path = "/{cedula}")
 	public Estudiante consultarPorCedula(@PathVariable String cedula) {
 		return this.estudianteService.consultarPorCedula(cedula);
 	}
 	
-	@PostMapping(path = "/guardar")
+	@PostMapping
 	private void guardar(@RequestBody Estudiante estudiante) {
 		// TODO Auto-generated method stub
 		this.estudianteService.guardar(estudiante);
 	}
 	
-	@PutMapping(path = "/actualizar/{id}")
+	@PutMapping(path = "/{id}")
 	private void actualizar(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
 		// TODO Auto-generated method stub
 		estudiante.setId(id);
@@ -44,22 +44,21 @@ public class EstudianteControllerRestFul {
 		
 	}
 	
-	@PatchMapping(path = "/actualizarParcial/{id}")
+	@PatchMapping(path = "/{id}")
 	private void actualizarParcial(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
 		// TODO Auto-generated method stub
 		Estudiante estudiante2=this.estudianteService.consultarPorId(id);
-		estudiante2.setId(id);
 		estudiante2.setCedula(estudiante.getCedula());
 		this.estudianteService.actualizar(estudiante2);
 	}
 	
-	@DeleteMapping(path = "/borrar/{id}")
+	@DeleteMapping(path = "/{id}")
 	private void borrar(@PathVariable Integer id) {
 		// TODO Auto-generated method stub
 		this.estudianteService.eliminar(id);
 	}
 	
-	@GetMapping(path = "/buscarTodos")
+	@GetMapping
 	public List<Estudiante> buscarTodos() {
 		return this.estudianteService.buscarTodosEstudaintes();
 	}

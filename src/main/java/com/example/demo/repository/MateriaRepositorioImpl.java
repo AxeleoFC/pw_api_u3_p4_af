@@ -30,15 +30,15 @@ public class MateriaRepositorioImpl implements IMateriaRepository {
 	}
 
 	@Override
-	public void eliminarPorNombre(String nombre) {
+	public void eliminarPorId(Integer id) {
 		// TODO Auto-generated method stub
-
+		this.entityManager.remove(this.seleccionarPorId(id));
 	}
 
 	@Override
 	public void actualizar(Materia materia) {
 		// TODO Auto-generated method stub
-
+		this.entityManager.merge(materia);
 	}
 
 	@Override
@@ -47,6 +47,12 @@ public class MateriaRepositorioImpl implements IMateriaRepository {
 		TypedQuery<Materia> myQuery = this.entityManager
 				.createQuery("SELECT m FROM Materia m", Materia.class);
 		return myQuery.getResultList();
+	}
+
+	@Override
+	public Materia seleccionarPorId(Integer id) {
+		// TODO Auto-generated method stub
+		return this.entityManager.find(Materia.class, id);
 	}
 
 }

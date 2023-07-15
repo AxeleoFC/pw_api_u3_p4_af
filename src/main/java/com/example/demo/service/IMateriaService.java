@@ -6,9 +6,9 @@ import com.example.demo.repository.modelo.Materia;
 
 public interface IMateriaService {
 
-	public Materia bucarMateria(String nombre);
+	public Materia buscar(Integer id);
 	public List<Materia> materias();
 	public void agregar(Materia materia);
-	public void eliminarPorNombre(String nombre);
+	public void eliminar(Integer id);
 	public void actualizar(Materia materia);
 }

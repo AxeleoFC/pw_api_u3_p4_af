@@ -15,9 +15,9 @@ public class MateriaServiceImpl implements IMateriaService {
 	private IMateriaRepository materiaRepository;
 	
 	@Override
-	public Materia bucarMateria(String nombre) {
+	public Materia buscar(Integer id) {
 		// TODO Auto-generated method stub
-		return null;
+		return this.materiaRepository.seleccionarPorId(id);
 	}
 
 	@Override
@@ -33,15 +33,15 @@ public class MateriaServiceImpl implements IMateriaService {
 	}
 
 	@Override
-	public void eliminarPorNombre(String nombre) {
+	public void actualizar(Materia materia) {
 		// TODO Auto-generated method stub
-
+		this.materiaRepository.actualizar(materia);
 	}
 
 	@Override
-	public void actualizar(Materia materia) {
+	public void eliminar(Integer id) {
 		// TODO Auto-generated method stub
-
+		this.materiaRepository.eliminarPorId(id);
 	}
 
 }

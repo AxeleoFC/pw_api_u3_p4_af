@@ -6,9 +6,10 @@ import com.example.demo.repository.modelo.Materia;
 
 public interface IMateriaRepository {
 	public Materia seleccionarPorNombre(String nombre);
+	public Materia seleccionarPorId(Integer id);
 	public List<Materia> todasMaterias();
 	public void ingresar(Materia materia);
-	public void eliminarPorNombre(String nombre);
+	public void eliminarPorId(Integer id);
 	public void actualizar(Materia materia);
 
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.repository.modelo.Estudiante;
 import com.example.demo.repository.modelo.Horario;
 import com.example.demo.service.IHorarioService;
 

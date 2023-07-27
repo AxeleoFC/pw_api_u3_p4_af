@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,6 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.repository.modelo.Estudiante;
 import com.example.demo.service.IEstudianteService;
+import com.example.demo.service.to.EstudianteTO;
+import com.example.demo.service.to.MateriaTO;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/estudiantes")
@@ -30,7 +37,6 @@ public class EstudianteControllerRestFul {
 	private IEstudianteService estudianteService;
 	
 	// GET
-
 	@GetMapping(path = "/{cedula}", produces = MediaType.APPLICATION_XML_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Estudiante consultarPorCedula(@PathVariable String cedula) {
@@ -88,6 +94,26 @@ public class EstudianteControllerRestFul {
 		cabeceras.add("detalle mensaje", "ciudadano consultados exitosamente");
 		return new ResponseEntity<>(estu,cabeceras,2020);
 	}
+	
+	@GetMapping(path = "/hateoas")
+	public ResponseEntity<List<EstudianteTO>> consultarTodosHATEOAS() {
+		List<EstudianteTO> estu=this.estudianteService.buscarTodos();
+		/*
+		estu = estu.stream()
+				.map(estudiante->estudiante.add(new linkTo(methodOn(EstudianteControllerRestFul.class).buscarPorEstudianteTO(e.getCedula())).withRel("Materias")))
+				.collect(Collectors.toList());*/
+		for(EstudianteTO e: estu) {
+			Link link=linkTo(methodOn(EstudianteControllerRestFul.class).buscarPorEstudianteTO(e.getCedula())).withRel("Materias");
+			e.add(link);
+		}
+		return new ResponseEntity<>(estu,null,200);
+	}
+	
+	@GetMapping(path = "/{cedula}/materias")
+	public ResponseEntity<List<MateriaTO>> buscarPorEstudianteTO(@PathVariable String cedula){
+		return null;
+	}
+	
 	
 	@GetMapping(path = "/buscarTodosProvincia")
 	public List<Estudiante> buscarTodosProvincia(@RequestParam String provincia) {

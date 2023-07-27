@@ -1,12 +1,17 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.repository.IEstudianteRepository;
 import com.example.demo.repository.modelo.Estudiante;
+import com.example.demo.service.to.EstudianteTO;
+
+import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional.TxType;
 
 @Service
 public class EstudianteServiceImpl implements IEstudianteService {
@@ -33,6 +38,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
 	}
 
 	@Override
+	@Transactional(value = TxType.REQUIRES_NEW)
 	public void actualizar(Estudiante estudiante) {
 		// TODO Auto-generated method stub
 		this.estudianteRepository.actualizar(estudiante);
@@ -62,4 +68,24 @@ public class EstudianteServiceImpl implements IEstudianteService {
 		return this.estudianteRepository.todosEstudiantesP(provincia);
 	}
 
+	@Override
+	public List<EstudianteTO> buscarTodos() {
+		// TODO Auto-generated method stub
+		List<Estudiante> estudiantes=this.estudianteRepository.todosEstudiantes();
+		List<EstudianteTO> estudianteTOs = estudiantes.stream()
+				.map(estudiante->this.transformarTO(estudiante))
+				.collect(Collectors.toList());
+		return estudianteTOs;
+	}
+	private EstudianteTO transformarTO(Estudiante estudiante) {
+		EstudianteTO estudianteTO=new EstudianteTO();
+		estudianteTO.setId(estudiante.getId());
+		estudianteTO.setApellido(estudiante.getApellido());
+		estudianteTO.setCedula(estudiante.getCedula());
+		estudianteTO.setFechaNacimineto(estudiante.getFechaNacimineto());
+		estudianteTO.setNombre(estudiante.getNombre());
+		estudianteTO.setProvincia(estudiante.getProvincia());
+		return estudianteTO;
+		
+	}
 }

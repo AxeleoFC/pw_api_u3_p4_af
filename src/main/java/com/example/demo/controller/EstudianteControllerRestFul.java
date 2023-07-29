@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,19 +26,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.repository.modelo.Estudiante;
 import com.example.demo.service.IEstudianteService;
+import com.example.demo.service.IMateriaService;
 import com.example.demo.service.to.EstudianteTO;
 import com.example.demo.service.to.MateriaTO;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @RestController
 @RequestMapping("/estudiantes")
+@CrossOrigin
 public class EstudianteControllerRestFul {
 	
 	@Autowired
 	private IEstudianteService estudianteService;
-	
+
+	@Autowired
+	private IMateriaService iMateriaService;
 	// GET
 	@GetMapping(path = "/{cedula}", produces = MediaType.APPLICATION_XML_VALUE)
 	@ResponseStatus(HttpStatus.OK)
@@ -95,24 +99,28 @@ public class EstudianteControllerRestFul {
 		return new ResponseEntity<>(estu,cabeceras,2020);
 	}
 	
-	@GetMapping(path = "/hateoas")
+	@GetMapping(path = "/hateoas", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<EstudianteTO>> consultarTodosHATEOAS() {
-		List<EstudianteTO> estu=this.estudianteService.buscarTodos();
-		/*
-		estu = estu.stream()
-				.map(estudiante->estudiante.add(new linkTo(methodOn(EstudianteControllerRestFul.class).buscarPorEstudianteTO(e.getCedula())).withRel("Materias")))
-				.collect(Collectors.toList());*/
-		for(EstudianteTO e: estu) {
-			Link link=linkTo(methodOn(EstudianteControllerRestFul.class).buscarPorEstudianteTO(e.getCedula())).withRel("Materias");
-			e.add(link);
+		System.out.println("EOOOOO"+this.estudianteService.consultarPorCedula("1752310126"));
+		List<EstudianteTO> lista = this.estudianteService.buscarTodos();
+		for (EstudianteTO e : lista) {
+			Link myLink = linkTo(methodOn(EstudianteControllerRestFul.class).buscarPorEstudiante(e.getCedula()))
+					.withSelfRel();
 		}
-		return new ResponseEntity<>(estu,null,200);
+		return new ResponseEntity<>(lista, null, 200);
 	}
 	
-	@GetMapping(path = "/{cedula}/materias")
-	public ResponseEntity<List<MateriaTO>> buscarPorEstudianteTO(@PathVariable String cedula){
-		return null;
+	@GetMapping(path = "/{cedula}/materias" ,produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<MateriaTO>> buscarPorEstudiante(@PathVariable String cedula) {
+		List<MateriaTO> lista = this.iMateriaService.buscarPorCedulaEstudiante(cedula);
+		for (MateriaTO materiaTO : lista) {
+			Link myLink =  linkTo(methodOn(MateriaControllerRestFul.class).consultarPorId(materiaTO.getId()))
+					.withRel("materia");
+			materiaTO.add(myLink);
+		}
+		return new ResponseEntity<>(lista, null, 200);
 	}
+	
 	
 	
 	@GetMapping(path = "/buscarTodosProvincia")

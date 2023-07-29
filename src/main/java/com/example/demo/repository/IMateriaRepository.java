@@ -11,5 +11,9 @@ public interface IMateriaRepository {
 	public void ingresar(Materia materia);
 	public void eliminarPorId(Integer id);
 	public void actualizar(Materia materia);
+	
+	public List<Materia> buscarPorCedulaEstudiante(String cedula);
+
+	public Materia buscarPorId(Integer id);
 
 }

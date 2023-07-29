@@ -1,16 +1,21 @@
 package com.example.demo.repository.modelo;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
+@JsonIgnoreProperties(value = {"materias"})
 @Table(name = "estudiante")
 public class Estudiante {
 	@Id
@@ -34,10 +39,14 @@ public class Estudiante {
 	@Column(name = "estu_fecha_nacimineto")
 	private LocalDateTime fechaNacimineto;
 
+	@OneToMany(mappedBy = "estudiante")
+	private List<Materia> materias;
+	
+
 	@Override
 	public String toString() {
 		return "Estudiante [id=" + id + ", cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido
-				+ ", fechaNacimineto=" + fechaNacimineto + "]";
+				+ ", provincia=" + provincia + ", fechaNacimineto=" + fechaNacimineto + ", materias=" + materias + "]";
 	}
 
 	//SET y GET
@@ -89,6 +98,13 @@ public class Estudiante {
 		this.provincia = provincia;
 	}
 	
-	
+	public List<Materia> getMaterias() {
+		return materias;
+	}
+
+	public void setMaterias(List<Materia> materias) {
+		this.materias = materias;
+	}
+
 
 }

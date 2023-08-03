@@ -41,7 +41,7 @@ public class EstudianteControllerRestFul {
 	@Autowired
 	private IMateriaService iMateriaService;
 	// GET
-	@GetMapping(path = "/{cedula}", produces = MediaType.APPLICATION_XML_VALUE)
+	@GetMapping(path = "/{cedula}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Estudiante consultarPorCedula(@PathVariable String cedula) {
 
@@ -56,7 +56,7 @@ public class EstudianteControllerRestFul {
 	
 	// POST
 
-	@PostMapping(consumes = "application/xml")
+	@PostMapping(consumes = "application/json")
 	public void insertar(@RequestBody Estudiante estudiante) {
 		this.estudianteService.guardar(estudiante);
 	}

@@ -47,7 +47,7 @@ public class Materia {
 	@Override
 	public String toString() {
 		return "Materia [id=" + id + ", nombre=" + nombre + ", horas=" + horas + ", creditos=" + creditos
-				+ ", profesor=" + profesor + ", estudiante=" + estudiante + ", cobros=" + cobros + "]";
+				+ ", profesor=" + profesor + ", estudiante=" + estudiante;
 	}
 	
 	

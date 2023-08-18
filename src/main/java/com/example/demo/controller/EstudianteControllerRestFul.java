@@ -4,6 +4,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
@@ -57,11 +58,11 @@ public class EstudianteControllerRestFul {
 	// POST
 
 	@PostMapping(consumes = "application/json")
-	public void insertar(@RequestBody Estudiante estudiante) {
+	public void insertar(@RequestBody Estudiante estudiante){
 		this.estudianteService.guardar(estudiante);
 	}
 	
-	@PostMapping(consumes = "application/xml", produces = MediaType.APPLICATION_XML_VALUE)
+	@PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_XML_VALUE)
 	public Estudiante insertarBuscar(@RequestBody Estudiante estudiante) {
 		this.estudianteService.guardar(estudiante);
 		return this.estudianteService.consultarPorCedula(estudiante.getCedula());

@@ -3,15 +3,15 @@ package com.example.demo.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.repository.IEstudianteRepository;
 import com.example.demo.repository.modelo.Estudiante;
 import com.example.demo.service.to.EstudianteTO;
-
-import jakarta.transaction.Transactional;
-import jakarta.transaction.Transactional.TxType;
 
 @Service
 public class EstudianteServiceImpl implements IEstudianteService {
